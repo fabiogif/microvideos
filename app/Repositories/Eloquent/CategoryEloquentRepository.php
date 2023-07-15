@@ -33,7 +33,7 @@ class CategoryEloquentRepository implements CategoryRepositoryInterface
     public function findById(string $categoryId): Category
     {
         $category =  $this->model->find($categoryId);
-        
+
         if(!$category)
         {
             throw new NotFoundException($category);
@@ -43,7 +43,12 @@ class CategoryEloquentRepository implements CategoryRepositoryInterface
 
     public function findAll(string $filter = '', $order = 'DESC'): array
     {
-      $this->model->findAll($filter, $order);
+      $categories = $this->model->where(function ($query) use ($filter){
+          if($filter)
+          $query->where('name', 'LIKE', '%'.$filter.'%');
+      })->orderBy('id', $order)->get();
+
+      return $categories->toArray();
     }
 
     public function paginate(string $filter = '', $order = 'DESC', int $page = 1, int $totalPage = 15): PaginationInterface
