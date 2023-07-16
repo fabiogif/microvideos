@@ -14,7 +14,6 @@ class CreateCategoryUseCase
 
     public function __construct(protected CategoryRepositoryInterface $repository)
     {
-        $this->repository = $repository;
     }
 
     public function execute(CategoryCreateInputDto $input): CategoryCreateOutputDto

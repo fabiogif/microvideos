@@ -9,8 +9,7 @@ class ListCategoryUseCase {
 
     public function __construct(protected CategoryRepositoryInterface $repository)
     {
-        $this->repository = $repository;
-    } 
+    }
 
     public function execute(CategoryInputDto $items): CategoryOutputDto
     {
