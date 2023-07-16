@@ -85,7 +85,7 @@ class CategoryRepositoryTest extends TestCase
     public function testUpdateIdNotFound()
     {
         try{
-            $category = new CategoryEntity(name: 'not found');
+            $category = new CategoryEntity(name: 'not_found');
 
             $this->repository->update($category);
 
@@ -109,5 +109,27 @@ class CategoryRepositoryTest extends TestCase
         $this->assertNotEquals($category->name, $response->name);
 
         $this->assertDatabaseHas('categories', ['name' => $entityCategory->name]);
+    }
+
+    public function testDeleteIdNotFound()
+    {
+        try{
+
+            $this->repository->delete('not_found');
+
+            $this->assertTrue(false);
+        } catch (\Throwable $th)
+        {
+            $this->assertInstanceOf(NotFoundException::class, $th);
+        }
+    }
+
+    public function testDelete()
+    {
+        $category =  Model::factory()->create();
+
+        $response = $this->repository->delete($category->id);
+
+        $this->assertTrue($response);
     }
 }
