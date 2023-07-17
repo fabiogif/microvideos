@@ -13,14 +13,13 @@ class ListCategoryUseCase {
 
     public function execute(CategoryInputDto $items): CategoryOutputDto
     {
-
-         $category = $this->repository->findById($items);
+         $category = $this->repository->findById($items->id);
 
          return new CategoryOutputDto(
             id: $category->id,
             name: $category->name,
             description: $category->description,
-            is_active: $category->isActive
+            is_active: $category->isActive,
          );
 
 
