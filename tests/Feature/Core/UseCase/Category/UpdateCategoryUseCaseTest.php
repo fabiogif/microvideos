@@ -24,8 +24,8 @@ class UpdateCategoryUseCaseTest extends TestCase
         $response =  $useCase->execute(new CategoryUpdateInputDto(id: $categoryDb->id, name: 'Nova Cat'));
 
         $this->assertEquals('Nova Cat', $response->name);
-        $this->assertDatabaseHas('categories', ['name' => $response->name]);
 
+        $this->assertDatabaseHas('categories', ['name' => $response->name]);
 
     }
 }
