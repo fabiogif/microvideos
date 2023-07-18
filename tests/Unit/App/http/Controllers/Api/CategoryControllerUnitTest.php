@@ -14,7 +14,7 @@ class CategoryControllerUnitTest extends TestCase
     /**
      * A basic unit test example.
      */
-    public function testeIndex(): void
+    public function teste_index(): void
     {
 
         $mockRequest = Mockery::mock(Request::class);
