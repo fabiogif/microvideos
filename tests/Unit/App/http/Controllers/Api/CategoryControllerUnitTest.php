@@ -31,5 +31,15 @@ class CategoryControllerUnitTest extends TestCase
         $this->assertIsObject($response->resource);
         $this->assertArrayHasKey('meta',  $response->additional);
 
+
+
+        $mockUseCaseSky = Mockery::mock(ListCategoriesUseCase::class);
+        $mockUseCaseSky->shouldReceive('execute')->andReturn($mockDtoOutput);
+
+        $categoryController->index($mockRequest, $mockUseCaseSky);
+        $mockUseCaseSky->shouldHaveReceived('execute');
+
+        Mockery::close();
+
     }
 }
