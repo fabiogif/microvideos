@@ -9,8 +9,10 @@ use App\Models\Category;
 use Core\UseCase\Category\CreateCategoryUseCase;
 use Core\UseCase\Category\ListCategoriesUseCase;
 use Core\UseCase\Category\ListCategoryUseCase;
+use Core\UseCase\Category\UpdateCategoryUseCase;
 use Core\UseCase\DTO\Category\CategoryCreateInputDto;
 use Core\UseCase\DTO\Category\CategoryInputDto;
+use Core\UseCase\DTO\Category\CategoryUpdateInputDto;
 use Core\UseCase\DTO\Category\ListCategoriesInputDto;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -59,4 +61,18 @@ class CategoryController extends Controller
 
         return (new CategoryResource(collect($category)))->response();
     }
+
+    public function update(StoreUpdateCategoryRequest $request, UpdateCategoryUseCase $useCase, $id): JsonResponse
+    {
+
+        $response = $useCase->execute(
+            input: new CategoryUpdateInputDto(
+                id: $id,
+                name: $request->name
+        ));
+
+        return (new CategoryResource(collect($response)))->response();
+    }
+
+
 }

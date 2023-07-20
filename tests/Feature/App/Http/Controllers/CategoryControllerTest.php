@@ -10,6 +10,7 @@ use App\Http\Requests\StoreUpdateCategoryRequest;
 use Core\UseCase\Category\CreateCategoryUseCase;
 use Core\UseCase\Category\ListCategoriesUseCase;
 use Core\UseCase\Category\ListCategoryUseCase;
+use Core\UseCase\Category\UpdateCategoryUseCase;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -66,6 +67,26 @@ class CategoryControllerTest extends TestCase
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    public function test_update()
+    {
+        $category = Category::factory()->create();
+
+        $request = new StoreUpdateCategoryRequest();
+        $request->headers->set('content-type', 'application/json');
+
+        $request->setJson(new ParameterBag([
+            'name' => 'Test',
+            'description' => 'Test description',
+        ]));
+        $response = $this->controller->update(  request: $request,
+                                                useCase: new UpdateCategoryUseCase($this->repository),
+                                                id: $category->id);
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+
     }
 
 }
