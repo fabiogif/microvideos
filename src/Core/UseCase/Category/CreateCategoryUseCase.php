@@ -23,6 +23,7 @@ class CreateCategoryUseCase
             description: $input->description,
             isActive: $input->isActive,
         );
+
         $newCategory =  $this->repository->insert($category);
 
         return new CategoryCreateOutputDto(
