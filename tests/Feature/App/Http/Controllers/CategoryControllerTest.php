@@ -8,9 +8,11 @@ use App\Models\Category;
 use App\Repositories\Eloquent\CategoryEloquentRepository;
 use App\Http\Requests\StoreUpdateCategoryRequest;
 use Core\UseCase\Category\CreateCategoryUseCase;
+use Core\UseCase\Category\DeleteCategoryUseCase;
 use Core\UseCase\Category\ListCategoriesUseCase;
 use Core\UseCase\Category\ListCategoryUseCase;
 use Core\UseCase\Category\UpdateCategoryUseCase;
+use Core\UseCase\DTO\Category\CategoryInputDto;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -86,7 +88,17 @@ class CategoryControllerTest extends TestCase
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertDatabaseHas('categories', ['name' => 'Test']);
 
+    }
+
+    public function test_delete()
+    {
+        $category = Category::factory()->create();
+
+        $response = $this->controller->destroy(useCase: new DeleteCategoryUseCase($this->repository), id: $category->id);
+
+        $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 
 }
