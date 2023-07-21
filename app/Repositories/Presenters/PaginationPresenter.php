@@ -42,7 +42,6 @@ class PaginationPresenter implements PaginationInterface
     {
         return $this->paginator->currentPage() ?? 0;
     }
-
     public function perPage(): int
     {
         return $this->paginator->perPage() ?? 0;

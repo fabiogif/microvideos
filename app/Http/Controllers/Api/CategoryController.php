@@ -23,18 +23,20 @@ use Psy\Util\Json;
 class CategoryController extends Controller
 {
 
-    public function index(Request $request, ListCategoriesUseCase $categoriesUseCase)
+    public function index(Request $request, ListCategoriesUseCase $useCase)
     {
-        $response = $categoriesUseCase->execute(input: new ListCategoriesInputDto(
+        $response = $useCase->execute(input: new ListCategoriesInputDto(
             filter: $request->get('filter', ''),
             order: $request->get('order', 'DESC'),
             page:  (int)$request->get('page', 1),
             totalPage: (int)$request->get('totalPage', 15),
         ));
 
+
         return CategoryResource::collection(collect($response->items))
             ->additional(['meta' => [
                 'total' => $response->total ,
+                'current_page' => $response->current_page,
                 'last_page' => $response->last_page,
                 'first_page' => $response->first_page,
                 'per_page' => $response->per_page,
@@ -53,26 +55,24 @@ class CategoryController extends Controller
               isActive: (bool)$request->is_active ?? true,
             )
         );
-        return (new CategoryResource(collect($response)))->response()->setStatusCode(Response::HTTP_CREATED);
+        return (new CategoryResource($response))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function show(ListCategoryUseCase $useCase, $id): JsonResponse
     {
         $category = $useCase->execute(new CategoryInputDto($id));
-
-        return (new CategoryResource(collect($category)))->response();
+        return (new CategoryResource($category))->response();
     }
 
     public function update(StoreUpdateCategoryRequest $request, UpdateCategoryUseCase $useCase, $id): JsonResponse
     {
-
         $response = $useCase->execute(
             input: new CategoryUpdateInputDto(
                 id: $id,
                 name: $request->name
         ));
 
-        return (new CategoryResource(collect($response)))->response();
+        return (new CategoryResource($response))->response();
     }
 
     public function destroy(DeleteCategoryUseCase $useCase, $id)
@@ -82,7 +82,6 @@ class CategoryController extends Controller
                 id: $id
             )
         );
-
         return response()->noContent();
     }
 

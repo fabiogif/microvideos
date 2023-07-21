@@ -3,7 +3,6 @@
 namespace Tests\Feature\App\Http\Controllers;
 
 use App\Http\Controllers\Api\CategoryController;
-use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Repositories\Eloquent\CategoryEloquentRepository;
 use App\Http\Requests\StoreUpdateCategoryRequest;
@@ -12,7 +11,6 @@ use Core\UseCase\Category\DeleteCategoryUseCase;
 use Core\UseCase\Category\ListCategoriesUseCase;
 use Core\UseCase\Category\ListCategoryUseCase;
 use Core\UseCase\Category\UpdateCategoryUseCase;
-use Core\UseCase\DTO\Category\CategoryInputDto;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -22,9 +20,6 @@ use Tests\TestCase;
 
 class CategoryControllerTest extends TestCase
 {
-
-
-
     protected $repository;
 
     protected $controller;
@@ -58,7 +53,7 @@ class CategoryControllerTest extends TestCase
 
         $response = $this->controller->store($request, $useCase);
         $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_CREATED, $response->status());
 
     }
 

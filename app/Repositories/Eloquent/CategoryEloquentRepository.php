@@ -25,7 +25,7 @@ class CategoryEloquentRepository implements CategoryRepositoryInterface
            'description' => $category->description,
            'is_active' => $category->isActive,
            'created_at' => $category->createdAt()
-                  ]);
+       ]);
 
        return $this->toCategory($category);
     }

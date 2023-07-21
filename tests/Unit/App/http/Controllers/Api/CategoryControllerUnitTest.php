@@ -20,7 +20,7 @@ class CategoryControllerUnitTest extends TestCase
         $mockRequest = Mockery::mock(Request::class);
         $mockRequest->shouldReceive('get')->andReturn('test');
 
-        $mockDtoOutput = Mockery::mock(ListCategoriesOutputDto::class, [[], 1,2,3,4,5,6]);
+        $mockDtoOutput = Mockery::mock(ListCategoriesOutputDto::class, [[], 1,2,3,4,5,6,7]);
 
         $mockUseCase = Mockery::mock(ListCategoriesUseCase::class);
         $mockUseCase->shouldReceive('execute')->andReturn($mockDtoOutput);
@@ -31,10 +31,9 @@ class CategoryControllerUnitTest extends TestCase
         $this->assertIsObject($response->resource);
         $this->assertArrayHasKey('meta',  $response->additional);
 
-
-
         $mockUseCaseSky = Mockery::mock(ListCategoriesUseCase::class);
         $mockUseCaseSky->shouldReceive('execute')->andReturn($mockDtoOutput);
+
 
         $categoryController->index($mockRequest, $mockUseCaseSky);
         $mockUseCaseSky->shouldHaveReceived('execute');
