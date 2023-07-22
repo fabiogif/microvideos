@@ -36,7 +36,7 @@ class CategoryEloquentRepository implements CategoryRepositoryInterface
 
         if(!$category)
         {
-            throw new NotFoundException($category);
+            throw new NotFoundException('Category not found');
         }
         return $this->toCategory($category);
     }

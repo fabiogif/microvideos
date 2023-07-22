@@ -3,6 +3,7 @@
 namespace Tests\Feature\Api;
 
 use App\Models\Category;
+use Illuminate\Http\Response;
 use Tests\TestCase;
 
 class CategoryApiTest extends TestCase
@@ -42,8 +43,55 @@ class CategoryApiTest extends TestCase
 
         $response = $this->getJson("$this->endPoint?page=2");
         $response->assertStatus(200);
+        $this->assertEquals(2, $response['meta']['current_page']);
 
     }
+
+
+    public function test_list_category_notfound()
+    {
+        $response = $this->getJson("$this->endPoint/not_found");
+
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    public function test_list_category_byId()
+    {
+
+        $category = Category::factory()->create();
+
+        $response = $this->getJson("$this->endPoint/{$category->id}");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonStructure(
+            ['data' => [
+                "id",
+                "name",
+                "description",
+                "is_active",
+                "created_at",
+            ]]
+        );
+    }
+
+    public function test_category_store()
+    {
+        $data = [];
+        $response =  $this->postJson($this->endPoint, $data);
+
+        $response->dump();
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $response->assertJsonStructure(
+            ['message',
+                'errors'=> [
+                "name"
+            ]]
+        );
+    }
 }
+
+
 
 
