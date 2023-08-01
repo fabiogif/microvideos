@@ -50,7 +50,7 @@ class CategoryController extends Controller
     {
         $response = $useCaseCategory->execute(
           input: new CategoryCreateInputDto(
-              name: 'Nova test',
+              name:  $request->name,
               description: $request->description ?? '',
               isActive: (bool)$request->is_active ?? true,
             )
