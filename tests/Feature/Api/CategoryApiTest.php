@@ -3,7 +3,6 @@
 namespace Tests\Feature\Api;
 
 use App\Models\Category;
-use http\Env\Request;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 
@@ -51,7 +50,7 @@ class CategoryApiTest extends TestCase
 
     public function test_list_category_notfound()
     {
-        $response = $this->getJson("$this->endPoint/not_found");
+        $response = $this->getJson("$this->endPoint/not_found_category");
 
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
@@ -115,7 +114,7 @@ class CategoryApiTest extends TestCase
     {
         $data = [ 'name' => 'New Category Fabio'];
 
-        $response = $this->putJson("$this->endPoint/{not_found}", $data);
+        $response = $this->putJson("$this->endPoint/{not_found_category}", $data);
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
@@ -161,7 +160,22 @@ class CategoryApiTest extends TestCase
 
     }
 
+    public function test_not_found_delete()
+    {
+        $response = $this->deleteJson("$this->endPoint/{not_found_category}");
 
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    public function test_delete()
+    {
+        $category = Category::factory()->create();
+        $response = $this->deleteJson("$this->endPoint/{$category->id}");
+
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
+
+        $this->assertSoftDeleted('categories', ['id' =>$category->id]);
+    }
 
 }
 
