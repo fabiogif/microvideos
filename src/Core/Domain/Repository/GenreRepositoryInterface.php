@@ -14,3 +14,4 @@ interface GenreRepositoryInterface
     public function update(Genre $genre): Genre;
     public function delete(string $id): bool;
 }
+

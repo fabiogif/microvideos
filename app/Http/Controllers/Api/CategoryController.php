@@ -5,16 +5,19 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
-use App\Models\Category;
-use Core\UseCase\Category\CreateCategoryUseCase;
-use Core\UseCase\Category\DeleteCategoryUseCase;
-use Core\UseCase\Category\ListCategoriesUseCase;
-use Core\UseCase\Category\ListCategoryUseCase;
-use Core\UseCase\Category\UpdateCategoryUseCase;
-use Core\UseCase\DTO\Category\CategoryCreateInputDto;
-use Core\UseCase\DTO\Category\CategoryInputDto;
-use Core\UseCase\DTO\Category\CategoryUpdateInputDto;
-use Core\UseCase\DTO\Category\ListCategoriesInputDto;
+use Core\UseCase\Category\{
+    CreateCategoryUseCase,
+    DeleteCategoryUseCase,
+    ListCategoriesUseCase,
+    ListCategoryUseCase,
+    UpdateCategoryUseCase
+};
+use Core\UseCase\DTO\Category\{
+    CategoryCreateInputDto,
+    CategoryInputDto,
+    CategoryUpdateInputDto,
+    ListCategoriesInputDto
+};
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -28,20 +31,20 @@ class CategoryController extends Controller
         $response = $useCase->execute(input: new ListCategoriesInputDto(
             filter: $request->get('filter', ''),
             order: $request->get('order', 'DESC'),
-            page:  (int)$request->get('page', 1),
+            page: (int)$request->get('page', 1),
             totalPage: (int)$request->get('totalPage', 15),
         ));
 
 
         return CategoryResource::collection(collect($response->items))
             ->additional(['meta' => [
-                'total' => $response->total ,
+                'total' => $response->total,
                 'current_page' => $response->current_page,
                 'last_page' => $response->last_page,
                 'first_page' => $response->first_page,
                 'per_page' => $response->per_page,
                 'to' => $response->to,
-                'from'=> $response->from
+                'from' => $response->from
             ]]);
     }
 
@@ -49,10 +52,10 @@ class CategoryController extends Controller
     public function store(StoreUpdateCategoryRequest $request, CreateCategoryUseCase $useCaseCategory)
     {
         $response = $useCaseCategory->execute(
-          input: new CategoryCreateInputDto(
-              name:  $request->name,
-              description: $request->description ?? '',
-              isActive: (bool)$request->is_active ?? true,
+            input: new CategoryCreateInputDto(
+                name: $request->name,
+                description: $request->description ?? '',
+                isActive: (bool)$request->is_active ?? true,
             )
         );
         return (new CategoryResource($response))->response()->setStatusCode(Response::HTTP_CREATED);
@@ -70,7 +73,8 @@ class CategoryController extends Controller
             input: new CategoryUpdateInputDto(
                 id: $id,
                 name: $request->name
-        ));
+            )
+        );
 
         return (new CategoryResource($response))->response();
     }
@@ -84,6 +88,4 @@ class CategoryController extends Controller
         );
         return response()->noContent();
     }
-
-
 }

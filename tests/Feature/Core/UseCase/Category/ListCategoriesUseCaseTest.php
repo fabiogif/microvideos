@@ -20,10 +20,6 @@ class ListCategoriesUseCaseTest extends TestCase
 
        return $useCase->execute(new ListCategoriesInputDto());
     }
-
-    /**
-     * A basic feature test list all Category empty.
-     */
     public function test_list_all_empyt(): void
     {
         $response = $this->createUseCase();
@@ -31,10 +27,6 @@ class ListCategoriesUseCaseTest extends TestCase
         $this->assertCount(0, $response->items);
     }
 
-
-    /**
-     *  feature test list all Category.
-     */
     public function test_list_all(): void
     {
         $category = ModelCategory::factory()->count(20)->create();

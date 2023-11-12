@@ -16,8 +16,8 @@ class UpdateCategoryUseCaseUnitTest extends TestCase
       public function testRenameCategory()
     {
         $uuid = Uuid::uuid4()->toString();
-        $categoryName = 'Name';
-        $categoryDesc = 'Desc';
+        $categoryName = 'Name Category';
+        $categoryDesc = 'Description Category';
 
         $mockEntity = Mockery::mock(Category::class, [$uuid, $categoryName, $categoryDesc]);
 

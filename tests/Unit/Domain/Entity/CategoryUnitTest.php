@@ -39,10 +39,10 @@ class CategoryUnitTest extends TestCase
 
         $category = new Category(id: $uuid, name: 'Categoria', isActive: true, createdAt: '2023-01-01 12:12:12');
 
-        $category->update(name: 'new categoria', description: 'new dec');
+        $category->update(name: 'new category', description: 'new description');
 
-        $this->assertEquals('new categoria', $category->name);
-        $this->assertEquals('new dec', $category->description);
+        $this->assertEquals('new category', $category->name);
+        $this->assertEquals('new description', $category->description);
     }
 
     public function testExceptionName()

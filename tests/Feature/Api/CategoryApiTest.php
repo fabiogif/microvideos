@@ -31,10 +31,11 @@ class CategoryApiTest extends TestCase
                 "first_page",
                 "per_page",
                 "to",
-                "from", ]]);
+                "from",
+            ]
+        ]);
 
         $response->assertStatus(200);
-
     }
 
     public function test_list_paginate_categories()
@@ -44,7 +45,6 @@ class CategoryApiTest extends TestCase
         $response = $this->getJson("$this->endPoint?page=2");
         $response->assertStatus(200);
         $this->assertEquals(2, $response['meta']['current_page']);
-
     }
 
 
@@ -82,10 +82,12 @@ class CategoryApiTest extends TestCase
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonStructure(
-            ['message',
-                'errors'=> [
-                "name"
-            ]]
+            [
+                'message',
+                'errors' => [
+                    "name"
+                ]
+            ]
         );
     }
 
@@ -103,16 +105,15 @@ class CategoryApiTest extends TestCase
         $this->assertEquals(true, $response['data']['is_active']);
 
         $this->assertDatabaseHas('categories', [
-                    'id' => $response['data']['id'],
-                    'name' => $response['data']['name'],
-                     'is_active' => $response['data']['is_active'],
+            'id' => $response['data']['id'],
+            'name' => $response['data']['name'],
+            'is_active' => $response['data']['is_active'],
         ]);
-
     }
 
     public function test_notfound_update()
     {
-        $data = [ 'name' => 'New Category Fabio'];
+        $data = ['name' => 'New Category Fabio'];
 
         $response = $this->putJson("$this->endPoint/{not_found_category}", $data);
 
@@ -127,10 +128,10 @@ class CategoryApiTest extends TestCase
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $response->assertJsonStructure([
-           'message',
-           'errors' => [
-               'name'
-           ]
+            'message',
+            'errors' => [
+                'name'
+            ]
         ]);
     }
 
@@ -138,12 +139,11 @@ class CategoryApiTest extends TestCase
     {
         $category = Category::factory()->create();
 
-        $data = [ 'name' => 'New Category'];
+        $data = ['name' => 'New Category'];
 
         $response = $this->putJson("$this->endPoint/{$category->id}", $data);
 
-        $response->assertStatus(Response::HTTP_OK);
-       ;
+        $response->assertStatus(Response::HTTP_OK);;
         $this->assertDatabaseHas('categories', [
             'name' =>  $response['data']['name']
         ]);
@@ -157,7 +157,6 @@ class CategoryApiTest extends TestCase
                 'created_at'
             ]
         ]);
-
     }
 
     public function test_not_found_delete()
@@ -174,11 +173,6 @@ class CategoryApiTest extends TestCase
 
         $response->assertStatus(Response::HTTP_NO_CONTENT);
 
-        $this->assertSoftDeleted('categories', ['id' =>$category->id]);
+        $this->assertSoftDeleted('categories', ['id' => $category->id]);
     }
-
 }
-
-
-
-
